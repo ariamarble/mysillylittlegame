@@ -5,6 +5,7 @@
 # name - name of player
 # realm - reason user is visiting the magical realm
 # question - willing to embark on quest
+# valid_answer - checks for a valid answer in an if-else statement
 
 # User input dialog
 name=$(zenity --entry --title "What is your name?" --text "Enter your name:")
@@ -30,11 +31,22 @@ zenity --info --text "Interesting... I would not have expected $realm would brin
 question=$(zenity --entry --title "Are you ready?" --text "$name, are you willing to embark on an epic quest to acquire $realm?")
 
 # if-else statements
-if [ "$question" == "yes" ]; then
-    zenity --info --text "Glad to hear it! Let's begin..."
-elif [ "$question" == "no" ]; then
-    zenity --info --text "I am very sad to hear that $name... Leave this realm at once!!!"
-else
-    zenity --error --text "Your answer must be either 'yes' or 'no'."
-    exit 1
-fi
+valid_answer=false
+
+valid_answer="false"
+
+while [ "$valid_answer" == "false" ]; do
+    question=$(zenity --entry --title "Are you ready?" --text "$name, are you willing to embark on an epic quest to acquire $realm?")
+
+    if [ "$question" == "yes" ]; then
+        zenity --info --text "Glad to hear it! Let's begin..."
+        valid_answer="true"
+    elif [ "$question" == "no" ]; then
+        zenity --info --text "I am very sad to hear that $name... Leave this realm at once!!!"
+       exit 1
+    else
+        zenity --error --text "Your answer must be either 'yes' or 'no'. Please try again."
+    fi
+done
+
+zenity --info --text "This is a test"
